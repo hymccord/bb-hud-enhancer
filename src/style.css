@@ -1,0 +1,59 @@
+:bb-hud-enh {
+  position: 'block';
+}
+
+.bb-hud-enh-remembrall-button {
+  position: absolute;
+  top: 14px;
+  left: 219px;
+  z-index: 23;
+  width: 23px;
+  height: 20px;
+}
+
+/* .bountifulBeanstalkCastleView__noiseMeter {
+  container-type: inline-size;
+} */
+
+.bountifulBeanstalkCastleView__noiseMeterArrow {
+  position: absolute;
+  left: 0;
+  transition: left 0.8s ease;
+  /* transform: translateX(calc(0cqw - 100%)); */
+}
+
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin::before {
+  position: absolute;
+  content: '';
+  bottom: -5px;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, 50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid rgb(55, 209, 55);
+}
+
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg::before {
+  position: absolute;
+  content: '';
+  bottom: -5px;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, 50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid yellow;
+}
+
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax::before {
+  position: absolute;
+  content: '';
+  bottom: -5px;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, 50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid red;
+}

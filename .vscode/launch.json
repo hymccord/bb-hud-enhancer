@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch index.html",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "url": "https://www.mousehuntgame.com",
+      "file": "${workspaceFolder}/index.html",
+      "pathMappings": [
+        {
+          "url": "http://localhost:6857",
+          "path": "${workspaceFolder}/src"
+        }
+      ]
+    }
+  ]
+}
