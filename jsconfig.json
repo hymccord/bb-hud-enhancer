@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "strict": true,
+    "lib": [
+      "ES2015",
+      "DOM"
+    ]
+  },
+  "include": [
+    "./src",
+    "./typings"
+  ]
+}
