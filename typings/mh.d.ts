@@ -23,5 +23,5 @@ interface User {
   trap_power: number;
   trap_luck: number;
   environment_name: string;
-  enviroment_atts: any;
+  enviroment_atts: EnvironmentAttributes;
 }

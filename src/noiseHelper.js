@@ -4,53 +4,68 @@ import { Templates } from './templates';
 import { MiceARs, MicePowers} from './powers';
 
 export class NoiseHelper {
-  /** @type {JQuery<HTMLElement> | undefined} */
+  /** @type {JQuery<HTMLElement>} */
+  // @ts-ignore
   _container;
 
   /**
-   * @param {EnvironmentAttributes} data
+   * @param {User} data
    */
   render(data) {
-    if (!this._container) {
-      this._container = getHUD();
-      const noiseMeter = getNoiseMeter(this._container);
-      const noiseMeterWidth = noiseMeter.width() ?? 457;
-
-      let noiseArrow = this.#createNoiseArrow(
-        noiseMeter,
-        'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin'
-      );
-      noiseArrow.css('left',
-        this.#getProjectedNoisePercent(data, data.castle.projected_noise.actual_min) * noiseMeterWidth
-      );
-
-      noiseArrow = this.#createNoiseArrow(
-        noiseMeter,
-        'bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg'
-      );
-      const cre = this.#calculateCatchRate(data);
-      const noisePerHunt =
-        data.castle.projected_noise.actual_min * (1 - cre) +
-        data.castle.projected_noise.actual_max * cre;
-      noiseArrow.css('left',
-        this.#getProjectedNoisePercent(data, noisePerHunt) * noiseMeterWidth
-      );
-
-      noiseArrow = this.#createNoiseArrow(
-        noiseMeter,
-        'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax'
-      );
-      noiseArrow.css('left',
-        this.#getProjectedNoisePercent(data, data.castle.projected_noise.actual_max) * noiseMeterWidth
-      );
+    if (this._container) {
+      return;
     }
+
+    const atts = data.enviroment_atts;
+    if (atts.castle.is_boss_chase) {
+      return;
+    }
+
+    this._container = getHUD();
+    const noiseMeter = getNoiseMeter(this._container);
+    const noiseMeterWidth = noiseMeter.width() ?? 457;
+
+    let noiseArrow = this.#initNoiseArrow(
+      noiseMeter,
+      'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin'
+    );
+    noiseArrow.css('left',
+      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_min) * noiseMeterWidth
+    );
+
+    noiseArrow = this.#initNoiseArrow(
+      noiseMeter,
+      'bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg'
+    );
+    const cre = this.#calculateCatchRate(data);
+    const noisePerHunt =
+        atts.castle.projected_noise.actual_min * (1 - cre) +
+        atts.castle.projected_noise.actual_max * cre;
+    noiseArrow.css('left',
+      this.#getProjectedNoisePercent(atts, noisePerHunt) * noiseMeterWidth
+    );
+
+    noiseArrow = this.#initNoiseArrow(
+      noiseMeter,
+      'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax'
+    );
+    noiseArrow.css('left',
+      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_max) * noiseMeterWidth
+    );
+
+    this.updateToolTips(data, noisePerHunt);
   }
 
   /**
-   * @param {EnvironmentAttributes} data
+   * @param {User} data
    */
   update(data) {
     if (!this._container) {
+      return;
+    }
+
+    const atts = data.enviroment_atts;
+    if (atts.castle.is_boss_chase) {
       return;
     }
 
@@ -60,26 +75,55 @@ export class NoiseHelper {
     // Min
     let triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(data, data.castle.projected_noise.actual_min) * meterWidth
+      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_min) * meterWidth
     );
 
     // Avg
     const cre = this.#calculateCatchRate(data);
     const noisePerHunt =
-      data.castle.projected_noise.actual_min * (1 - cre) +
-      data.castle.projected_noise.actual_max * cre;
+      atts.castle.projected_noise.actual_min * (1 - cre) +
+      atts.castle.projected_noise.actual_max * cre;
     triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(data, noisePerHunt) * meterWidth
+      this.#getProjectedNoisePercent(atts, noisePerHunt) * meterWidth
     );
 
     // Max
     triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(data, data.castle.projected_noise.actual_max) * meterWidth
+      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_max) * meterWidth
     );
 
-    return data.castle.hunts_remaining;
+    this.updateToolTips(data, noisePerHunt);
+
+    return atts.castle.hunts_remaining;
+  }
+
+  /**
+   * @param {User} data
+   * @param {number} noisePerHunt
+  */
+
+  updateToolTips(data, noisePerHunt) {
+    const noiseMeterContainer = $(
+      '.bountifulBeanstalkCastleView__noiseMeter',
+      this._container
+    );
+
+    const noiseMeterTooltip = $('.mousehuntTooltip', noiseMeterContainer);
+    if (!data.enviroment_atts.castle.is_boss_chase) {
+      const castle = data.enviroment_atts.castle;
+      const minNoise = castle.noise_level + castle.projected_noise.actual_min * castle.hunts_remaining;
+      const avgNoise = Math.round(castle.noise_level + noisePerHunt * castle.hunts_remaining);
+      const maxNoise = castle.noise_level + castle.projected_noise.actual_max * castle.hunts_remaining;
+      noiseMeterTooltip.append(`
+      <div style="text-align: center;">
+        <br/><span class="bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin">▲</span><span>: Room ends with a minimum of ${minNoise} noise.</span>
+        <br/><span class="bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg">▲</span><span>: Room ends with a average of ${avgNoise} noise.</span>
+        <br/><span class="bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax">▲</span><span>: Room ends with a maximum of ${maxNoise} noise.</span>
+      </div>
+      `);
+    }
   }
 
   /**
@@ -95,20 +139,20 @@ export class NoiseHelper {
 
   /**
    *
-   * @param {EnvironmentAttributes} data
+   * @param {User} data
    */
   #calculateCatchRate(data) {
     /** @type {MousePool} */
     const pool = {};
 
-    let cheese = user.bait_name.replace(/ Cheese$/, '');
+    let cheese = data.bait_name.replace(/ Cheese$/, '');
     if (cheese.indexOf('Beanster') == -1) {
       cheese = 'Gouda';
     }
 
-    let stage = data.castle.current_floor.name.replace(/ Floor$/, '');
+    let stage = data.enviroment_atts.castle.current_floor.name.replace(/ Floor$/, '');
     // @ts-ignore
-    const population = MiceARs[user.environment_name][stage][cheese]['-'];
+    const population = MiceARs[data.environment_name][stage][cheese]['-'];
     for (const mouse in population) {
       if (mouse == 'SampleSize') {
         continue;
@@ -122,7 +166,7 @@ export class NoiseHelper {
       };
     }
 
-    const overallCR = getOverallCatchRate(user.trap_power, user.trap_luck, pool);
+    const overallCR = getOverallCatchRate(data.trap_power, data.trap_luck, pool);
 
     return overallCR;
   }
@@ -131,7 +175,7 @@ export class NoiseHelper {
    * @param {JQuery<HTMLElement>} parent
    * @param {string} cssClass
    */
-  #createNoiseArrow(parent, cssClass) {
+  #initNoiseArrow(parent, cssClass) {
     const arrow = $(Templates.NoiseMeterArrow);
     arrow.addClass(cssClass);
     $(parent).append(arrow);

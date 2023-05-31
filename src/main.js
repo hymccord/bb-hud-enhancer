@@ -25,13 +25,13 @@ function isAtBountifulBeanstalk() {
  */
 function updateAll(user) {
   // updateCrafting
-  _noiseHelper.update(user.enviroment_atts);
+  _noiseHelper.update(user);
   // updateRemembrall
 }
 
 function addNoiseHelper() {
   _noiseHelper = new NoiseHelper();
-  _noiseHelper.render(user.enviroment_atts);
+  _noiseHelper.render(user);
 }
 
 function addRemembrall() {

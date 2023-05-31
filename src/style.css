@@ -4,56 +4,33 @@
 
 .bb-hud-enh-remembrall-button {
   position: absolute;
-  top: 14px;
-  left: 219px;
+  top: 15px;
+  left: 222px;
   z-index: 23;
-  width: 23px;
+  width: 20px;
   height: 20px;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiBgkNBw7FMYKQAAABFElEQVQoz53SvS5EURQF4G+mGCLx02mnQDkUCgWRoNVKPICGhhYPIaHBAwjzDkMi8QRCoVAOEiaG0NmKO/fOuIaEfZq99l5n7Z9z+JdNOnTj3atrBxa6k8acidw5M5qnTWsIdZsqepRUbLkXnsx00kY0hGP9Xy4POBEejbRDNeFI8Vs7RcfCaQpnhbqBLB0i8wfVhXmKWMauZtcRn+1hKQEXQqUj2anIuHCduA9C74/EPqGZlC6hgHJHeiXzCu3gpVBRdtvC6z58WG2hCeEqUbzAmtNMcccGhltoEeft9USus6lsPXfCXALK3r4R04VXhVpKu+2iCEOq+SfMW59x2+6Ex6+fIm9phdpvavDiyn46wh/tE5uVY811cdV8AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA2LTA5VDEzOjA3OjE0KzAwOjAweWHOTgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wNi0wOVQxMzowNzoxNCswMDowMAg8dvIAAAAASUVORK5CYII=);
 }
-
-/* .bountifulBeanstalkCastleView__noiseMeter {
-  container-type: inline-size;
-} */
 
 .bountifulBeanstalkCastleView__noiseMeterArrow {
+  font-size: 15px;
   position: absolute;
   left: 0;
+  transform: translateX(-50%);
   transition: left 0.8s ease;
-  /* transform: translateX(calc(0cqw - 100%)); */
 }
 
-.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin::before {
-  position: absolute;
-  content: '';
-  bottom: -5px;
-  width: 0;
-  height: 0;
-  transform: translate(-50%, 50%);
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 10px solid rgb(55, 209, 55);
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin {
+  -webkit-text-stroke: 0.5px black;
+  color: rgb(55, 209, 55);
 }
 
-.bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg::before {
-  position: absolute;
-  content: '';
-  bottom: -5px;
-  width: 0;
-  height: 0;
-  transform: translate(-50%, 50%);
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 10px solid yellow;
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg {
+  -webkit-text-stroke: 0.5px black;
+  color: yellow
 }
 
-.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax::before {
-  position: absolute;
-  content: '';
-  bottom: -5px;
-  width: 0;
-  height: 0;
-  transform: translate(-50%, 50%);
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 10px solid red;
+.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax {
+  -webkit-text-stroke: 0.5px black;
+  color: red;
 }

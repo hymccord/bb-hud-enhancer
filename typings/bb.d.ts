@@ -1,6 +1,7 @@
 
 type EnvironmentAttributes = {
   castle: {
+    is_boss_chase: boolean;
     noise_level: number;
     max_noise_level: number;
     current_floor: {
