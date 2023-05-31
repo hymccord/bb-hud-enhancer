@@ -3,10 +3,35 @@ import { getHUD, getNoiseMeter } from './domNodes';
 import { Templates } from './templates';
 import { MiceARs, MicePowers} from './powers';
 
-export class NoiseHelper {
+/** @type {NoiseHelper} */
+let _noiseHelper;
+
+/**
+ * @param {User} data
+ */
+export function addNoiseHelper(data) {
+  const container = getHUD();
+  _noiseHelper = new NoiseHelper(container);
+  _noiseHelper.render(data);
+}
+
+/**
+ * @param {User} data
+ */
+export function updateNoiseHelper(data) {
+  _noiseHelper.update(data);
+}
+
+class NoiseHelper {
   /** @type {JQuery<HTMLElement>} */
-  // @ts-ignore
   _container;
+
+  /**
+   * @param {JQuery<HTMLElement>} container
+   */
+  constructor(container) {
+    this._container = container;
+  }
 
   /**
    * @param {User} data

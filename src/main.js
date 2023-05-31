@@ -2,15 +2,13 @@ import styles from './style.css';
 import { addStyles, createPopup } from './utils';
 import { log } from './logging';
 import { Templates } from './templates';
-import { NoiseHelper } from './noiseHelper';
+import { addNoiseHelper, updateNoiseHelper } from './noiseHelper';
 
 log('loaded!');
 
 let initialized = false;
 /** @type {JQuery<HTMLElement>} */
 let _container;
-/** @type {NoiseHelper} */
-let _noiseHelper;
 
 function getLocation() {
   return user.environment_name;
@@ -24,14 +22,7 @@ function isAtBountifulBeanstalk() {
  * @param {User} user
  */
 function updateAll(user) {
-  // updateCrafting
-  _noiseHelper.update(user);
-  // updateRemembrall
-}
-
-function addNoiseHelper() {
-  _noiseHelper = new NoiseHelper();
-  _noiseHelper.render(user);
+  updateNoiseHelper(user);
 }
 
 function addRemembrall() {
@@ -58,7 +49,7 @@ function initialize() {
   _container = $('.headsUpDisplayBountifulBeanstalkView');
 
   addStyles(styles, 'bb-hud-enh');
-  addNoiseHelper();
+  addNoiseHelper(user);
   addRemembrall();
 
   initialized = true;
