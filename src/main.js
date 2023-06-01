@@ -1,9 +1,10 @@
 import styles from './style.css';
-import { addStyles, createPopup } from './utils';
-import { log } from './logging';
+import { addStyles, createPopup } from './util/mouseplace';
+import { log } from './util/logging';
 import { Templates } from './templates';
-import { addCraftalyzer, updateCraftalyzer } from './craftalyzer';
-import { addNoiseHelper, updateNoiseHelper } from './noiseHelper';
+import { addSettings } from './settings';
+import { addCraftalyzer, updateCraftalyzer } from './modules/craftalyzer';
+import { addNoiseHelper, updateNoiseHelper } from './modules/noiseHelper';
 
 log('loaded!');
 
@@ -50,6 +51,7 @@ function showRemembrall() {
 function initialize() {
   _container = $('.headsUpDisplayBountifulBeanstalkView');
 
+  addSettings();
   addStyles(styles, 'bb-hud-enh');
   addCraftalyzer(user);
   addNoiseHelper(user);

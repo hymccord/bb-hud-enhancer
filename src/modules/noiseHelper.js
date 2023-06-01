@@ -1,7 +1,7 @@
-import { getOverallCatchRate } from './cre';
-import { getHUD, getNoiseMeter } from './domNodes';
-import { Templates } from './templates';
-import { MiceARs, MicePowers} from './powers';
+import { getOverallCatchRate } from '../cre';
+import { getHUD, getNoiseMeter } from '../domNodes';
+import { Templates } from '../templates';
+import { MiceARs, MicePowers} from '../powers';
 
 /** @type {NoiseHelper} */
 let _noiseHelper;

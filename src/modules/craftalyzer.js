@@ -1,5 +1,5 @@
-import { getHUD } from './domNodes';
-import { log } from './logging';
+import { getHUD } from '../domNodes';
+import { log } from '../util/logging';
 
 /** @type {Craftalyzer} */
 let _craftalyzer;

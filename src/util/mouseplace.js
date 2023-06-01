@@ -696,7 +696,9 @@ export const addSettingsTabOnce = (identifier = 'userscript-settings', name = 'U
  * @param {string}  key          The setting key.
  * @param {boolean} defaultValue The default value.
  * @param {string}  description  The setting description.
- * @param {Object}  section      The section settings.
+ * @param {{
+ *   id: string,
+ *   name: string}} section      The section settings.
  * @param {string}  tab          The tab to add the settings to.
  */
 export const addSetting = (name, key, defaultValue = true, description = '', section = {}, tab = 'userscript-settings') => {
@@ -716,7 +718,9 @@ export const addSetting = (name, key, defaultValue = true, description = '', sec
  * @param {string}  key          The setting key.
  * @param {boolean} defaultValue The default value.
  * @param {string}  description  The setting description.
- * @param {Object}  section      The section settings.
+ * @param {{
+ *   id: string,
+ *   name: string}} section      The section settings.
  * @param {string}  tab          The tab to add the settings to.
  */
 export const addSettingOnce = (name, key, defaultValue = true, description = '', section = {}, tab = 'userscript-settings') => {
