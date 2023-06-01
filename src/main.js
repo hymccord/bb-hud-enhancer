@@ -2,6 +2,7 @@ import styles from './style.css';
 import { addStyles, createPopup } from './utils';
 import { log } from './logging';
 import { Templates } from './templates';
+import { addCraftalyzer, updateCraftalyzer } from './craftalyzer';
 import { addNoiseHelper, updateNoiseHelper } from './noiseHelper';
 
 log('loaded!');
@@ -22,6 +23,7 @@ function isAtBountifulBeanstalk() {
  * @param {User} user
  */
 function updateAll(user) {
+  updateCraftalyzer(user);
   updateNoiseHelper(user);
 }
 
@@ -49,6 +51,7 @@ function initialize() {
   _container = $('.headsUpDisplayBountifulBeanstalkView');
 
   addStyles(styles, 'bb-hud-enh');
+  addCraftalyzer(user);
   addNoiseHelper(user);
   addRemembrall();
 
@@ -61,17 +64,20 @@ function main() {
   }
 
   eventRegistry.addEventListener('ajax_response', (data) => {
+    try {
+      if (!isAtBountifulBeanstalk()) {
+        return;
+      }
 
-    if (!isAtBountifulBeanstalk()) {
-      return;
+      if (initialized) {
+        updateAll(data.user);
+        return;
+      }
+
+      initialize();
+    } catch (e) {
+      log(e);
     }
-
-    if (initialized) {
-      updateAll(data.user);
-      return;
-    }
-
-    initialize();
   }, undefined, false, 10);
 }
 

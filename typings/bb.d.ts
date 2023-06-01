@@ -14,6 +14,43 @@ type EnvironmentAttributes = {
       actual_max: number;
     }
     hunts_remaining: number;
+  },
+  items: {[key: string]: {
+    quantity_unformatted: number;
+  }},
+  beanster_recipe: Craftable
+  lavish_beanster_recipe: Craftable
+  royal_beanster_recipe: Craftable
+}
+
+const BeansterRecipies = ['beanster_recipe', 'lavish_beanster_recipe', 'royal_beanster_recipe'] as const;
+type BeansterRecipe = typeof BeansterRecipies[number];
+
+type Craftable = CraftableVanilla | CraftableUpsell;
+
+type CraftableVanilla = {
+  result: { type: string };
+  has_upsell: false;
+  vanilla: Recipe;
+}
+
+type CraftableUpsell = {
+  result: { type: string };
+  has_upsell: true;
+  vanilla: Recipe;
+  upsell: Recipe;
+}
+
+type Recipe = {
+  items: [
+    {
+      type: string,
+      name: string,
+      thumb: string,
+      required_quantity: number}
+  ]
+  action: {
+    result_quantity: number
   }
 }
 

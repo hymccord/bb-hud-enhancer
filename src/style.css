@@ -16,7 +16,7 @@
   font-size: 15px;
   position: absolute;
   left: 0;
-  transform: translateX(-50%);
+  transform: translate(-50%, -25%);
   transition: left 0.8s ease;
 }
 

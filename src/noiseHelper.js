@@ -37,10 +37,6 @@ class NoiseHelper {
    * @param {User} data
    */
   render(data) {
-    if (this._container) {
-      return;
-    }
-
     const atts = data.enviroment_atts;
     if (atts.castle.is_boss_chase) {
       return;
@@ -85,10 +81,6 @@ class NoiseHelper {
    * @param {User} data
    */
   update(data) {
-    if (!this._container) {
-      return;
-    }
-
     const atts = data.enviroment_atts;
     if (atts.castle.is_boss_chase) {
       return;
