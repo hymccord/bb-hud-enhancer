@@ -127,6 +127,19 @@ export const onAjaxRequest = (callback, url = null, skipSuccess = false) => {
 };
 
 /**
+ * @typedef VisibilityCallback
+ * @property {Function} show   The callback to call when the element is shown.
+ * @property {Function} hide   The callback to call when the element is hidden.
+ * @property {Function} change The callback to call when the element is changed.
+ */
+
+/**
+ * @typedef UserVisibilityCallback
+ * @property {Function=} show   The callback to call when the element is shown.
+ * @property {Function=} hide   The callback to call when the element is hidden.
+ */
+
+/**
  * Run the callbacks depending on visibility.
  *
  * @author bradp
@@ -134,9 +147,9 @@ export const onAjaxRequest = (callback, url = null, skipSuccess = false) => {
  *
  * @ignore
  *
- * @param {Object} settings   Settings object.
+ * @param {{[key: string]: {isVisible: boolean, selector: string}}} settings Settings object.
  * @param {HTMLElement}   parentNode The parent node.
- * @param {Object} callbacks  The callbacks to run.
+ * @param {Object.<string, UserVisibilityCallback>} callbacks  The callbacks to run.
  *
  * @return {Object} The settings.
  */
@@ -167,12 +180,35 @@ export const runCallbacks = (settings, parentNode, callbacks) => {
 };
 
 /**
+ * Add user callback keys to settings.
+ *
+ * @author hymccord
+ * @since 1.6.1
+ *
+ * @ignore
+ *
+ * @param {{[key: string]: {isVisible: boolean, selector: string}}} settings Settings object.
+ * @param {{[key: string]: VisibilityCallback & {selector: string}}} callbacks  The callbacks to run.
+ *
+ * @return {{[key: string]: {isVisible: boolean, selector: string}}} The settings.
+ */
+export const addCallbacksToSettings = (settings, callbacks) => {
+  Object.keys(callbacks).forEach((key) => {
+    if (callbacks[key].selector) {
+      settings[key] = {
+        isVisible: false,
+        selector: callbacks[key].selector
+      };
+    }
+  });
+
+  return settings;
+};
+
+/**
  * Do something when the overlay is shown or hidden.
  *
- * @param {Object}   callbacks
- * @param {Function} callbacks.show   The callback to call when the overlay is shown.
- * @param {Function} callbacks.hide   The callback to call when the overlay is hidden.
- * @param {Function} callbacks.change The callback to call when the overlay is changed.
+ * @param {VisibilityCallback | {[key: string]: UserVisibilityCallback & {selector: string}}} callbacks
  */
 export const onOverlayChange = (callbacks) => {
   // Track the different overlay states.
@@ -218,6 +254,8 @@ export const onOverlayChange = (callbacks) => {
       selector: 'MHCheckout'
     }
   };
+
+  overlayData = addCallbacksToSettings(overlayData, callbacks);
 
   // Observe the overlayPopup element for changes.
   const observer = new MutationObserver(() => {
@@ -268,7 +306,7 @@ export const onOverlayClose = (callback) => {
 /**
  * Do something when the page or tab changes.
  *
- * @param {Object}   callbacks
+ * @param {UserVisibilityCallback} callbacks
  * @param {Function} callbacks.show   The callback to call when the page is navigated to.
  * @param {Function} callbacks.hide   The callback to call when the page is navigated away from.
  * @param {Function} callbacks.change The callback to call when the page is changed.
@@ -294,6 +332,8 @@ export const onPageChange = (callbacks) => {
     preferences: { isVisible: false, selector: 'PagePreferences' },
     profile: { isVisible: false, selector: 'HunterProfile' },
   };
+  tabData = addCallbacksToSettings(tabData, callbacks);
+
 
   // Observe the mousehuntContainer element for changes.
   const observer = new MutationObserver(() => {
@@ -323,7 +363,7 @@ export const onPageChange = (callbacks) => {
 /**
  * Do something when the trap tab is changed.
  *
- * @param {Object} callbacks
+ * @param {UserVisibilityCallback} callbacks
  */
 export const onTrapChange = (callbacks) => {
   // Track our trap states.
@@ -349,6 +389,7 @@ export const onTrapChange = (callbacks) => {
       selector: 'skin'
     }
   };
+  trapData = addCallbacksToSettings(trapData, callbacks);
 
   // Observe the trapTabContainer element for changes.
   const observer = new MutationObserver(() => {

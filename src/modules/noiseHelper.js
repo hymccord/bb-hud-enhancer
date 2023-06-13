@@ -1,7 +1,6 @@
-import { getOverallCatchRate } from '../cre';
 import { getHUD, getNoiseMeter } from '../domNodes';
 import { Templates } from '../templates';
-import { MiceARs, MicePowers} from '../powers';
+import { getCastleCatchRate } from '../catchRate';
 
 /** @type {NoiseHelper} */
 let _noiseHelper;
@@ -38,9 +37,14 @@ class NoiseHelper {
    */
   render(data) {
     const atts = data.enviroment_atts;
+    if (!atts.in_castle) {
+      return;
+    }
+
     if (atts.castle.is_boss_chase) {
       return;
     }
+
 
     this._container = getHUD();
     const noiseMeter = getNoiseMeter(this._container);
@@ -159,31 +163,7 @@ class NoiseHelper {
    * @param {User} data
    */
   #calculateCatchRate(data) {
-    /** @type {MousePool} */
-    const pool = {};
-
-    let cheese = data.bait_name.replace(/ Cheese$/, '');
-    if (cheese.indexOf('Beanster') == -1) {
-      cheese = 'Gouda';
-    }
-
-    let stage = data.enviroment_atts.castle.current_floor.name.replace(/ Floor$/, '');
-    // @ts-ignore
-    const population = MiceARs[data.environment_name][stage][cheese]['-'];
-    for (const mouse in population) {
-      if (mouse == 'SampleSize') {
-        continue;
-      }
-
-      const rate = population[mouse];
-      pool[mouse] = {
-        power: MicePowers[mouse].power,
-        eff: MicePowers[mouse].eff,
-        rate: rate,
-      };
-    }
-
-    const overallCR = getOverallCatchRate(data.trap_power, data.trap_luck, pool);
+    const overallCR = getCastleCatchRate(data);
 
     return overallCR;
   }

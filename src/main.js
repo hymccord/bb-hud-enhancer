@@ -1,3 +1,4 @@
+import './comment';
 import styles from './style.css';
 import { addStyles, createPopup } from './util/mouseplace';
 import { log } from './util/logging';
@@ -5,6 +6,7 @@ import { Templates } from './templates';
 import { addSettings } from './settings';
 import { addCraftalyzer, updateCraftalyzer } from './modules/craftalyzer';
 import { addNoiseHelper, updateNoiseHelper } from './modules/noiseHelper';
+import { addHarpMeOut } from './modules/harpMeOut';
 
 log('loaded!');
 
@@ -56,6 +58,7 @@ function initialize() {
   addCraftalyzer(user);
   addNoiseHelper(user);
   addRemembrall();
+  addHarpMeOut();
 
   initialized = true;
 }

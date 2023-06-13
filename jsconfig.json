@@ -6,7 +6,12 @@
     "lib": [
       "ES2015",
       "DOM"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/common/*": ["./src/*"],
+      "@/modules/*": ["./src/modules/*"],
+    }
   },
   "include": [
     "./src",

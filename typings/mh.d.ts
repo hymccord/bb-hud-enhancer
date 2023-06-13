@@ -19,7 +19,7 @@ interface EventRegistry {
 declare var user: User;
 
 interface User {
-  bait_name: string;
+  bait_name: string | 0;
   trap_power: number;
   trap_luck: number;
   environment_name: string;
