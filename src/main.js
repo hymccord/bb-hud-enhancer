@@ -57,7 +57,7 @@ function initialize() {
   addStyles(styles, 'bb-hud-enh');
   addCraftalyzer(user);
   addNoiseHelper(user);
-  addRemembrall();
+  // addRemembrall();
   addHarpMeOut();
 
   initialized = true;

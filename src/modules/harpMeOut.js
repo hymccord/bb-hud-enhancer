@@ -1,12 +1,16 @@
 import { getCastleCatchRate } from '../catchRate';
+import { getEnhancerSetting } from '../settings';
 import { Templates } from '../templates';
-import { log } from '../util/logging';
 import { onOverlayChange } from '../util/mouseplace';
 
 // eslint-disable-next-line no-unused-vars
 let _harpMeOut;
 
 export function addHarpMeOut() {
+  if (!getEnhancerSetting('enableHarpmeout')) {
+    return;
+  }
+
   onOverlayChange({
     harpDialog: {
       selector: 'bountifulBeanstalkHarpStringDialogPopup',
@@ -28,8 +32,6 @@ const HarpMeOut = () => {
   let _container = null;
 
   self.render = () => {
-    log('rending harp me out!');
-
     _container = $(Templates.HarpMeOut).insertBefore('.bountifulBeanstalkPlayHarpDialogView__buttonRow');
     applyEventListeners();
   };

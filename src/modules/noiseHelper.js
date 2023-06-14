@@ -1,6 +1,7 @@
 import { getHUD, getNoiseMeter } from '../domNodes';
 import { Templates } from '../templates';
 import { getCastleCatchRate } from '../catchRate';
+import { getEnhancerSetting } from '../settings';
 
 /** @type {NoiseHelper} */
 let _noiseHelper;
@@ -9,6 +10,10 @@ let _noiseHelper;
  * @param {User} data
  */
 export function addNoiseHelper(data) {
+  if (!getEnhancerSetting('enableNoisehelper')) {
+    return;
+  }
+
   const container = getHUD();
   _noiseHelper = new NoiseHelper(container);
   _noiseHelper.render(data);
@@ -18,6 +23,10 @@ export function addNoiseHelper(data) {
  * @param {User} data
  */
 export function updateNoiseHelper(data) {
+  if (!_noiseHelper) {
+    return;
+  }
+
   _noiseHelper.update(data);
 }
 
@@ -116,8 +125,6 @@ class NoiseHelper {
     );
 
     this.updateToolTips(data, noisePerHunt);
-
-    return atts.castle.hunts_remaining;
   }
 
   /**

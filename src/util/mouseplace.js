@@ -648,12 +648,12 @@ export const saveSetting = (key, value, identifier = 'mh-utils-settings') => {
  * @param {string}  key   The setting key.
  * @param {boolean} value The setting value.
  */
-export const saveSettingAndToggleClass = (node, key, value) => {
+export const saveSettingAndToggleClass = (node, key, value, identifier) => {
   // Toggle the state of the checkbox.
   node.classList.toggle('active');
 
   // Save the setting.
-  saveSetting(key, value);
+  saveSetting(key, value, identifier);
 
   // Add the completed class & remove it in a second.
   node.parentNode.classList.add('completed');
@@ -856,19 +856,16 @@ export const addSettingOnce = (name, key, defaultValue = true, description = '',
   settingRowInputCheckbox.classList.add('mousehuntSettingSlider');
 
   // Depending on the current state of the setting, add the active class.
-  const currentSetting = getSetting(key);
-  let isActive = false;
+  const currentSetting = getSetting(key, null, section.id);
   if (currentSetting) {
     settingRowInputCheckbox.classList.add('active');
-    isActive = true;
   } else if (null === currentSetting && defaultValue) {
     settingRowInputCheckbox.classList.add('active');
-    isActive = true;
   }
 
   // Event listener for when the setting is clicked.
   settingRowInputCheckbox.onclick = (event) => {
-    saveSettingAndToggleClass(event.target, key, ! isActive);
+    saveSettingAndToggleClass(event.target, key, !event.target.classList.contains('active'), section.id);
   };
 
   // Add the input to the settings row.

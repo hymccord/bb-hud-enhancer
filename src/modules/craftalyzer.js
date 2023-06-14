@@ -1,4 +1,5 @@
 import { getHUD } from '../domNodes';
+import { getEnhancerSetting } from '../settings';
 import { log } from '../util/logging';
 
 /** @type {Craftalyzer} */
@@ -7,14 +8,28 @@ let _craftalyzer;
 /** @param {User} data */
 export function addCraftalyzer(data) {
 
+  if (!getEnhancerSetting('enableCraftalyzer')) {
+    return;
+  }
+
   /** @type {BeansterRecipe[]} */
-  const beansterRecipies = ['beanster_recipe', 'lavish_beanster_recipe', 'royal_beanster_recipe'];
+  // const beansterRecipies = ['beanster_recipe', 'lavish_beanster_recipe', 'royal_beanster_recipe'];
   /** @type {{[key: string]: Craftable}} */
   const recipies = {};
-  /** */
-  for (const recipeName of beansterRecipies) {
-    if (recipeName in data.enviroment_atts) {
-      recipies[recipeName] = data.enviroment_atts[recipeName];
+
+  // for (const recipeName of beansterRecipies) {
+  //   if (recipeName in data.enviroment_atts) {
+  //     recipies[recipeName] = data.enviroment_atts[recipeName];
+  //   }
+  // }
+
+  for (const [key, value] of Object.entries(data.enviroment_atts)) {
+    if (!key.endsWith('_recipe')) {
+      continue;
+    }
+
+    if (typeof value === 'object' && 'vanilla' in value) {
+      recipies[key] = value;
     }
   }
 
@@ -111,14 +126,14 @@ class Craftalyzer {
     for (const [recipeName, recipe] of Object.entries(this._currentRecipies)) {
       let quantity = this.getCraftable(recipeName, data.enviroment_atts.items);
       currentlyCraftable.push({
-        selector: this._currentRecipies[recipeName].result,
+        selector: recipe.result,
         classSelector: 'headsUpDisplayBountifulBeanstalkView__baitQuantity',
         quantity
       });
 
       quantity = this.getCraftableQuantityWithLimit(Infinity, recipeName, data.enviroment_atts.items, settings);
       currentlyCraftable.push({
-        selector: recipe.items[0].type,
+        selector: recipe.result,
         classSelector: 'headsUpDisplayBountifulBeanstalkView__ingredientQuantity',
         quantity
       });
@@ -192,8 +207,8 @@ class Craftalyzer {
   renderAllCraftable(data) {
     const container = getHUD();
     for (const craftable of data) {
-      $(`div[data-item-type=${craftable.selector}].${craftable.classSelector}`, container)
-        .append(`<span> (+${craftable.quantity})`);
+      $(`.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer[data-item-type="${craftable.selector}"] > .${craftable.classSelector}`, container)
+        .append(`<span> (${craftable.quantity})</span>`);
     }
   }
 }
