@@ -1,6 +1,6 @@
-import { getCastleCatchRate } from '../catchRate';
 import { getEnhancerSetting } from '../settings';
 import { Templates } from '../templates';
+import { getProjectedAvgNoise, getProjectedMaxNoise, getProjectedMinNoise } from '../util/castle';
 import { onOverlayChange } from '../util/mouseplace';
 
 // eslint-disable-next-line no-unused-vars
@@ -54,25 +54,21 @@ const HarpMeOut = () => {
 
   function handleMaxButton() {
     const data = getData().castle;
-    const minNoise = data.noise_level + data.projected_noise.actual_min * data.hunts_remaining;
+    const minNoise = getProjectedMinNoise(user);
     const stringsToPlay = data.max_noise_level - minNoise;
     setVolume(stringsToPlay);
   }
 
   function handleAvgButton() {
     const data = getData().castle;
-    var cre = getCastleCatchRate(user);
-    const noisePerHunt =
-      data.projected_noise.actual_min * (1 - cre) +
-      data.projected_noise.actual_max * cre;
-    const avgNoise = Math.round(data.noise_level + noisePerHunt * data.hunts_remaining);
+    const avgNoise = getProjectedAvgNoise(user);
     const stringsToPlay = data.max_noise_level - avgNoise;
     setVolume(stringsToPlay);
   }
 
   function handleMinButton() {
     const data = getData().castle;
-    const maxNoise = data.noise_level + data.projected_noise.actual_max * data.hunts_remaining;
+    const maxNoise = getProjectedMaxNoise(user);
     const stringsToPlay = data.max_noise_level - maxNoise;
     setVolume(stringsToPlay);
   }

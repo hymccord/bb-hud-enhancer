@@ -1,7 +1,7 @@
 import { getHUD, getNoiseMeter } from '../domNodes';
 import { Templates } from '../templates';
-import { getCastleCatchRate } from '../catchRate';
 import { getEnhancerSetting } from '../settings';
+import { getProjectedAvgNoise, getProjectedMaxNoise, getProjectedMinNoise } from '../util/castle';
 
 /** @type {NoiseHelper} */
 let _noiseHelper;
@@ -57,37 +57,23 @@ class NoiseHelper {
 
     this._container = getHUD();
     const noiseMeter = getNoiseMeter(this._container);
-    const noiseMeterWidth = noiseMeter.width() ?? 457;
 
-    let noiseArrow = this.#initNoiseArrow(
+    this.#initNoiseArrow(
       noiseMeter,
       'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin'
     );
-    noiseArrow.css('left',
-      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_min) * noiseMeterWidth
-    );
 
-    noiseArrow = this.#initNoiseArrow(
+    this.#initNoiseArrow(
       noiseMeter,
       'bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg'
     );
-    const cre = this.#calculateCatchRate(data);
-    const noisePerHunt =
-        atts.castle.projected_noise.actual_min * (1 - cre) +
-        atts.castle.projected_noise.actual_max * cre;
-    noiseArrow.css('left',
-      this.#getProjectedNoisePercent(atts, noisePerHunt) * noiseMeterWidth
-    );
 
-    noiseArrow = this.#initNoiseArrow(
+    this.#initNoiseArrow(
       noiseMeter,
       'bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax'
     );
-    noiseArrow.css('left',
-      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_max) * noiseMeterWidth
-    );
 
-    this.updateToolTips(data, noisePerHunt);
+    this.update(data);
   }
 
   /**
@@ -103,36 +89,33 @@ class NoiseHelper {
     const meterWidth = noiseMeter.width() ?? 457;
 
     // Min
+    let totalProjectedNoise = getProjectedMinNoise(data);
     let triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_min) * meterWidth
+      this.#getProjectedNoisePercent(atts, totalProjectedNoise) * meterWidth
     );
 
     // Avg
-    const cre = this.#calculateCatchRate(data);
-    const noisePerHunt =
-      atts.castle.projected_noise.actual_min * (1 - cre) +
-      atts.castle.projected_noise.actual_max * cre;
+    totalProjectedNoise = getProjectedAvgNoise(data);
     triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedAvg', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(atts, noisePerHunt) * meterWidth
+      this.#getProjectedNoisePercent(atts, totalProjectedNoise) * meterWidth
     );
 
     // Max
+    totalProjectedNoise = getProjectedMaxNoise(data);
     triangle = $('.bountifulBeanstalkCastleView__noiseMeterArrow--projectedMax', this._container);
     triangle.css('left',
-      this.#getProjectedNoisePercent(atts, atts.castle.projected_noise.actual_max) * meterWidth
+      this.#getProjectedNoisePercent(atts, totalProjectedNoise) * meterWidth
     );
 
-    this.updateToolTips(data, noisePerHunt);
+    this.updateToolTips(data);
   }
 
   /**
    * @param {User} data
-   * @param {number} noisePerHunt
   */
-
-  updateToolTips(data, noisePerHunt) {
+  updateToolTips(data) {
     const noiseMeterContainer = $(
       '.bountifulBeanstalkCastleView__noiseMeter',
       this._container
@@ -140,10 +123,9 @@ class NoiseHelper {
 
     const noiseMeterTooltip = $('.mousehuntTooltip', noiseMeterContainer);
     if (!data.enviroment_atts.castle.is_boss_chase) {
-      const castle = data.enviroment_atts.castle;
-      const minNoise = castle.noise_level + castle.projected_noise.actual_min * castle.hunts_remaining;
-      const avgNoise = Math.round(castle.noise_level + noisePerHunt * castle.hunts_remaining);
-      const maxNoise = castle.noise_level + castle.projected_noise.actual_max * castle.hunts_remaining;
+      const minNoise = getProjectedMinNoise(data);
+      const avgNoise = getProjectedAvgNoise(data);
+      const maxNoise = getProjectedMaxNoise(data);
       noiseMeterTooltip.append(`
       <div style="text-align: center;">
         <br/><span class="bountifulBeanstalkCastleView__noiseMeterArrow--projectedMin">▲</span><span>: Room ends with a minimum of ${minNoise} noise.</span>
@@ -157,22 +139,12 @@ class NoiseHelper {
   /**
    *
    * @param {EnvironmentAttributes} data
-   * @param {number} noisePerHunt
+   * @param {number} totalProjectedNoise
    * @returns {number}
    */
-  #getProjectedNoisePercent(data, noisePerHunt) {
-    const projectedNoisePercent = (data.castle.noise_level + data.castle.hunts_remaining * noisePerHunt) / data.castle.max_noise_level;
+  #getProjectedNoisePercent(data, totalProjectedNoise) {
+    const projectedNoisePercent = totalProjectedNoise / data.castle.max_noise_level;
     return Math.min(1, projectedNoisePercent);
-  }
-
-  /**
-   *
-   * @param {User} data
-   */
-  #calculateCatchRate(data) {
-    const overallCR = getCastleCatchRate(data);
-
-    return overallCR;
   }
 
   /**

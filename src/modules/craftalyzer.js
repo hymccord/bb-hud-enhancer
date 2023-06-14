@@ -29,6 +29,7 @@ export function addCraftalyzer(data) {
     }
 
     if (typeof value === 'object' && 'vanilla' in value) {
+      // @ts-ignore
       recipies[key] = value;
     }
   }
