@@ -5,7 +5,7 @@
 // @description  Enhance the Bountiful Beanstalk HUD with useful information!
 // @author       Xellis
 // @match        https://www.mousehuntgame.com/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=mousehuntgame.com
+// @icon         https://www.mousehuntgame.com/images/mice/square/6b9bd6acb4a07d560f61e5678e4ff3b5.jpg
 // @downloadURL  https://hymccord.github.io/bb-hud-enhancer/bb-hud-enh.user.js
 // @updateURL    https://hymccord.github.io/bb-hud-enhancer/bb-hud-enh.user.js
 // @grant        none
