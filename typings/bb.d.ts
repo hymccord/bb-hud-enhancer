@@ -65,3 +65,10 @@ type MousePool = {[key: string]: {
   eff: number;
   rate: number;
 }}
+
+const BbHudEnhSettings = [
+  'enableCraftalyzer',
+  'enableNoisehelper',
+  'enableHarpmeout',
+] as const;
+type BbHudEnhSetting = typeof BbHudEnhSettings[number];
