@@ -6,6 +6,7 @@
   "entry": "index.js",
   "scripts": {
     "build": "rollup --config",
+    "build:prod": "rollup --config --configProd",
     "dev": "rollup -w --config",
     "serve": "node build/server.js"
   },

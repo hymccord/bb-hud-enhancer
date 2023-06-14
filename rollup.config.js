@@ -1,16 +1,9 @@
-import css from 'rollup-plugin-import-css';
+import defaultConfig from './config/rollup.default.config.js';
+import prodConfig from './config/rollup.prod.config.js';
 
-/** @type {import('rollup').MergedRollupOptions} */
-export default {
-  input: 'src/main.js',
-  output: [
-    {
-      dir: 'dist',
-      format: 'es',
-      name: 'bb-hud-enhander.user.js'
-    }
-  ],
-  plugins: [
-    css(),
-  ],
+export default commandLineArgs => {
+  if (commandLineArgs.configProd === true) {
+    return prodConfig;
+  }
+  return defaultConfig;
 };
