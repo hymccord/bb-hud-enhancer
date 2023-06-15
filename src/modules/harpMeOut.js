@@ -41,43 +41,87 @@ const HarpMeOut = () => {
       return;
     }
 
-
-    $('.bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.max', _container)
+    $('.harpMeOut__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.max', _container)
       .on('click', handleMaxButton);
 
-    $('.bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.avg', _container)
+    $('.harpMeOut__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.avg', _container)
       .on('click', handleAvgButton);
 
-    $('.bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.min', _container)
+    $('.harpMeOut__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.min', _container)
       .on('click', handleMinButton);
+
+    $('.harpMeIn__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.max', _container)
+      .on('click', handleMinusMaxButton);
+
+    $('.harpMeIn__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.avg', _container)
+      .on('click', handleMinusAvgButton);
+
+    $('.harpMeIn__buttonContainer .bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton.min', _container)
+      .on('click', handleMinusMinButton);
   }
 
   function handleMaxButton() {
-    const data = getData().castle;
     const minNoise = getProjectedMinNoise(user);
-    const stringsToPlay = data.max_noise_level - minNoise;
-    setVolume(stringsToPlay);
+    playLoudly(minNoise);
   }
 
   function handleAvgButton() {
-    const data = getData().castle;
     const avgNoise = getProjectedAvgNoise(user);
-    const stringsToPlay = data.max_noise_level - avgNoise;
-    setVolume(stringsToPlay);
+    playLoudly(avgNoise);
   }
 
   function handleMinButton() {
-    const data = getData().castle;
     const maxNoise = getProjectedMaxNoise(user);
-    const stringsToPlay = data.max_noise_level - maxNoise;
-    setVolume(stringsToPlay);
+    playLoudly(maxNoise);
+  }
+
+  function handleMinusMaxButton() {
+    const minNoise = getProjectedMinNoise(user);
+    playSoftly(minNoise);
+  }
+
+  function handleMinusAvgButton() {
+    const avgNoise = getProjectedAvgNoise(user);
+    playSoftly(avgNoise);
+  }
+
+  function handleMinusMinButton() {
+    const maxNoise = getProjectedMaxNoise(user);
+    playSoftly(maxNoise);
+  }
+
+
+  /**
+   * @param {number} toNoise
+   */
+  function playLoudly(toNoise) {
+    const data = getData().castle;
+    const stringsToPlay = data.max_noise_level - toNoise;
+    setLoudVolume(stringsToPlay);
+  }
+
+  function playSoftly(toNoise) {
+    const data = getData().castle;
+    const stringsToPlay = toNoise - data.noise_level;
+    setSoftVolume(stringsToPlay);
   }
 
   /**
    * @param {number} number
    */
-  function setVolume(number) {
+  function setLoudVolume(number) {
     const input = $('.bountifulBeanstalkPlayHarpDialogView__input[data-mode="plus"]');
+
+    number = Math.max(number, 0);
+
+    input.val(number).trigger('change');
+  }
+
+  /**
+   * @param {number} number
+   */
+  function setSoftVolume(number) {
+    const input = $('.bountifulBeanstalkPlayHarpDialogView__input[data-mode="minus"]');
 
     number = Math.max(number, 0);
 
