@@ -14,17 +14,17 @@ let initialized = false;
 /** @type {JQuery<HTMLElement>} */
 let _container;
 
-function getLocation() {
+/** @param {User} user */
+function getLocation(user) {
   return user.environment_name;
 }
 
-function isAtBountifulBeanstalk() {
-  return getLocation() == 'Bountiful Beanstalk';
+/** @param {User} user */
+function isAtBountifulBeanstalk(user) {
+  return getLocation(user) == 'Bountiful Beanstalk';
 }
 
-/**
- * @param {User} user
- */
+/** @param {User} user */
 function updateAll(user) {
   updateCraftalyzer(user);
   updateNoiseHelper(user);
@@ -64,13 +64,13 @@ function initialize() {
 }
 
 function main() {
-  if (isAtBountifulBeanstalk()) {
+  if (isAtBountifulBeanstalk(user)) {
     initialize();
   }
 
   eventRegistry.addEventListener('ajax_response', (data) => {
     try {
-      if (!isAtBountifulBeanstalk()) {
+      if (!isAtBountifulBeanstalk(data.user)) {
         return;
       }
 
