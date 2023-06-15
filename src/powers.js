@@ -101,6 +101,13 @@ export const MiceARs = {
           'Key Master': 49.3
         }
       },
+      'Leaping Lavish Beanster': {
+        '-': {
+          'Gate Keeper': 50.7,
+          'SampleSize': 10908,
+          'Key Master': 49.3
+        }
+      },
       'Royal Beanster': {
         '-': {
           'Wrathful Warden': 100,
@@ -140,6 +147,13 @@ export const MiceARs = {
           'Chafed Cellist': 49.61
         }
       },
+      'Leaping Lavish Beanster': {
+        '-': {
+          'Violent Violinist': 50.39,
+          'SampleSize': 14911,
+          'Chafed Cellist': 49.61
+        }
+      },
       'Royal Beanster': {
         '-': {
           'Treacherous Tubaist': 100,
@@ -173,6 +187,13 @@ export const MiceARs = {
         }
       },
       'Lavish Beanster': {
+        '-': {
+          'Malicious Marquis': 50.58,
+          'SampleSize': 605,
+          'Dastardly Duchess': 49.42
+        }
+      },
+      'Leaping Lavish Beanster': {
         '-': {
           'Malicious Marquis': 50.58,
           'SampleSize': 605,

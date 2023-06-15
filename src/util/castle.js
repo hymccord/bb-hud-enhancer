@@ -1,19 +1,10 @@
 import { MiceARs, MicePowers } from '../powers';
 import { getOverallCatchRate } from './cre';
 
-
-/** @param {User} data */
-export function getHuntsRemaining(data) {
-  const castle = data.enviroment_atts.castle;
-  const stepsPerHunt = data.bait_name === 'Leaping Lavish Beanster Cheese' ? 5 : 1;
-
-  return Math.ceil(castle.hunts_remaining / stepsPerHunt);
-}
-
 /** @param {User} data */
 export function getProjectedMinNoise(data) {
   const castle = data.enviroment_atts.castle;
-  const minNoise = castle.noise_level + castle.projected_noise.actual_min * getHuntsRemaining(data);
+  const minNoise = castle.noise_level + castle.projected_noise.actual_min * castle.hunts_remaining;
 
   return minNoise;
 }
@@ -26,14 +17,14 @@ export function getProjectedAvgNoise(data) {
     data.enviroment_atts.castle.projected_noise.actual_max * cre;
 
   const castle = data.enviroment_atts.castle;
-  const avgNoise = Math.round(castle.noise_level + noisePerHunt * getHuntsRemaining(data));
+  const avgNoise = Math.round(castle.noise_level + noisePerHunt * castle.hunts_remaining);
 
   return avgNoise;
 }
 /** @param {User} data */
 export function getProjectedMaxNoise(data) {
   const castle = data.enviroment_atts.castle;
-  const maxNoise = castle.noise_level + castle.projected_noise.actual_max * getHuntsRemaining(data);
+  const maxNoise = castle.noise_level + castle.projected_noise.actual_max * castle.hunts_remaining;
 
   return maxNoise;
 }
