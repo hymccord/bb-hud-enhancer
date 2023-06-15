@@ -41,10 +41,10 @@ export const Templates = {
           <div class="mousehuntTooltip tight top noEvents">
             Set loud value to minimum amount of strings.
             <br>
-            Useful when you minluck all mice.
+            Most useful when noise per catch is equal to noise per miss.
             <br>
             <br>
-            <b>Warning:</b> You won't get chased out unless you have 100% CR.
+            <b>Warning:</b> If noise per hunt is not constant, then you won't get chased out unless you have 100% CR.
             <div class="mousehuntTooltip-arrow"></div>
           </div>
         </div>
