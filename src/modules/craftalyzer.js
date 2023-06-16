@@ -12,28 +12,7 @@ export function addCraftalyzer(data) {
     return;
   }
 
-  /** @type {BeansterRecipe[]} */
-  // const beansterRecipies = ['beanster_recipe', 'lavish_beanster_recipe', 'royal_beanster_recipe'];
-  /** @type {{[key: string]: Craftable}} */
-  const recipies = {};
-
-  // for (const recipeName of beansterRecipies) {
-  //   if (recipeName in data.enviroment_atts) {
-  //     recipies[recipeName] = data.enviroment_atts[recipeName];
-  //   }
-  // }
-
-  for (const [key, value] of Object.entries(data.enviroment_atts)) {
-    if (!key.endsWith('_recipe')) {
-      continue;
-    }
-
-    if (typeof value === 'object' && 'vanilla' in value) {
-      // @ts-ignore
-      recipies[key] = value;
-    }
-  }
-
+  const recipies = getRecipies(data.enviroment_atts);
   _craftalyzer = new Craftalyzer(recipies);
 
   // TODO: replace settings
@@ -41,6 +20,7 @@ export function addCraftalyzer(data) {
     upsell: {
       beanster_recipe: true,
       lavish_beanster_recipe: true,
+      leaping_lavish_beanster_recipe: true,
       royal_beanster_recipe: true
     },
     ignore: {
@@ -63,6 +43,7 @@ export function updateCraftalyzer(data) {
     upsell: {
       beanster_recipe: true,
       lavish_beanster_recipe: true,
+      leaping_lavish_beanster_recipe: true,
       royal_beanster_recipe: true
     },
     ignore: {
@@ -73,7 +54,27 @@ export function updateCraftalyzer(data) {
   _craftalyzer.update(data, settings);
 }
 
-class Craftalyzer {
+/**
+ * @param {EnvironmentAttributes} atts
+ */
+export function getRecipies(atts) {
+  /** @type {{[key: string]: Craftable}} */
+  const recipies = {};
+  for (const [key, value] of Object.entries(atts)) {
+    if (!key.endsWith('_recipe')) {
+      continue;
+    }
+
+    if (typeof value === 'object' && 'vanilla' in value) {
+      // @ts-ignore
+      recipies[key] = value;
+    }
+  }
+
+  return recipies;
+}
+
+export class Craftalyzer {
 
   /** @type {{[key: string]: Recipe & {result: string}}} */
   _currentRecipies = {};
@@ -174,7 +175,6 @@ class Craftalyzer {
     }
 
     const recipe = this._currentRecipies[recipeName];
-    let maxCrafts = Infinity;
 
     for (const ingredient of recipe.items) {
       if (settings.ignore[ingredient.type]) {
@@ -192,14 +192,14 @@ class Craftalyzer {
         const ingredientCraftsNeeded = Math.ceil(ingredientsNeeded / this._currentRecipies[recursiveRecipeName].action.result_quantity);
 
         const craftedQuantity = this.getCraftableQuantityWithLimit(ingredientCraftsNeeded, recursiveRecipeName, inventoryItems, settings);
-        availableQuantity += craftedQuantity * this._currentRecipies[recursiveRecipeName].action.result_quantity;
+        availableQuantity += craftedQuantity;
       }
 
       const numberOfCrafts = Math.floor(availableQuantity / requiredQuantity);
-      maxCrafts = Math.min(maxCrafts, numberOfCrafts);
+      limit = Math.min(limit, numberOfCrafts);
     }
 
-    return maxCrafts * recipe.action.result_quantity;
+    return limit * recipe.action.result_quantity;
   }
 
   /**
