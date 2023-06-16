@@ -2,6 +2,20 @@ import { getHUD } from '../domNodes';
 import { getEnhancerSetting } from '../settings';
 import { log } from '../util/logging';
 
+// TODO: replace settings
+const settings = {
+  upsell: {
+    beanster_recipe: true,
+    lavish_beanster_recipe: true,
+    leaping_lavish_beanster_recipe: true,
+    royal_beanster_recipe: true
+  },
+  ignore: {
+    magic_essence_craft_item: true,
+    gold_stat_item: true,
+  }
+};
+
 /** @type {Craftalyzer} */
 let _craftalyzer;
 
@@ -15,19 +29,6 @@ export function addCraftalyzer(data) {
   const recipies = getRecipies(data.enviroment_atts);
   _craftalyzer = new Craftalyzer(recipies);
 
-  // TODO: replace settings
-  const settings = {
-    upsell: {
-      beanster_recipe: true,
-      lavish_beanster_recipe: true,
-      leaping_lavish_beanster_recipe: true,
-      royal_beanster_recipe: true
-    },
-    ignore: {
-      magic_essence_craft_item: true,
-      gold_stat_item: true,
-    }
-  };
   _craftalyzer.render(data, settings);
 }
 
@@ -38,19 +39,6 @@ export function updateCraftalyzer(data) {
     return;
   }
 
-  // TODO: replace settings
-  const settings = {
-    upsell: {
-      beanster_recipe: true,
-      lavish_beanster_recipe: true,
-      leaping_lavish_beanster_recipe: true,
-      royal_beanster_recipe: true
-    },
-    ignore: {
-      magic_essence_craft_item: true,
-      gold_stat_item: true,
-    }
-  };
   _craftalyzer.update(data, settings);
 }
 
@@ -88,6 +76,7 @@ export class Craftalyzer {
 
   /**
    * @param {User} data
+   * @param {{ upsell: { [x: string]: any; }; }} settings
    */
   render(data, settings) {
     this.setCurrentRecipies(settings);
@@ -96,6 +85,7 @@ export class Craftalyzer {
 
   /**
    * @param {User} data
+   * @param {{ upsell: { [x: string]: any; }; }} settings
    */
   update(data, settings) {
     this.updateItems(data, settings);
@@ -126,18 +116,13 @@ export class Craftalyzer {
   updateItems(data, settings) {
     const currentlyCraftable = [];
     for (const [recipeName, recipe] of Object.entries(this._currentRecipies)) {
-      let quantity = this.getCraftable(recipeName, data.enviroment_atts.items);
-      currentlyCraftable.push({
-        selector: recipe.result,
-        classSelector: 'headsUpDisplayBountifulBeanstalkView__baitQuantity',
-        quantity
-      });
+      const currentQuantity = this.getCraftable(recipeName, data.enviroment_atts.items);
 
-      quantity = this.getCraftableQuantityWithLimit(Infinity, recipeName, data.enviroment_atts.items, settings);
+      const maxQuantity = this.getCraftableQuantityWithLimit(Infinity, recipeName, data.enviroment_atts.items, settings);
       currentlyCraftable.push({
         selector: recipe.result,
         classSelector: 'headsUpDisplayBountifulBeanstalkView__ingredientQuantity',
-        quantity
+        quantity: `+${currentQuantity} | +${maxQuantity}`
       });
     }
 
@@ -208,8 +193,8 @@ export class Craftalyzer {
   renderAllCraftable(data) {
     const container = getHUD();
     for (const craftable of data) {
-      $(`.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer[data-item-type="${craftable.selector}"] > .${craftable.classSelector}`, container)
-        .append(`<span> (${craftable.quantity})</span>`);
+      $(`.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer[data-item-type="${craftable.selector}"]`, container)
+        .append(`<div class="headsUpDisplayBountifulBeanstalkView__craftalyzerQuantity">(${craftable.quantity})</div>`);
     }
   }
 }

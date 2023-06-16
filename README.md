@@ -30,3 +30,16 @@ Noise Tooltip
 
 Harp Me Out  
 ![Harp Me Out](/images/harpmeout.png)
+
+## Developing
+
+Use my [localhost userscript loader](https://github.com/hymccord/LocalhostUserscript).
+
+`pnpm install`
+
+(Use a split terminal to run these in parallel)
+
+`pnpm dev`  
+`pnpm serve`
+
+Or you can just copy paste the output from `dist/` into your userscript editor.

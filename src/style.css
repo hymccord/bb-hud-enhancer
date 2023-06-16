@@ -34,6 +34,14 @@
   -webkit-text-stroke: 0.5px black;
   color: red;
 }
+
+.headsUpDisplayBountifulBeanstalkView__craftalyzerQuantity {
+  top: 50px;
+  right: 0px;
+  position: absolute;
+  text-align: right;
+}
+
 .harpMeIn__buttonContainer .mousehuntTooltip,
 .harpMeOut__buttonContainer .mousehuntTooltip {
   width: 200px;
