@@ -9,14 +9,16 @@ export const Templates = {
       Set Soft
     </div>
     <div class="harpMeIn__buttonContainer mousehuntTooltipParent">
-      <button class="bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton max" style="color: white;">
-        Max
+      <button class="bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton min" style="color: white;">
+        Min
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set value as if you missed/fta every hunt.
+        Set soft value as if you made the minimal amount of noise.
+        <br>
+        Best when min and max noise per hunt is equal.
         <br>
         <br>
-        <b>Warning:</b> Uses the most amount of string to guarantee chase.
+        <b>Warning:</b> Uses a minimal amount of strings.
         <div class="mousehuntTooltip-arrow"></div>
       </div>
     </div>
@@ -25,24 +27,22 @@ export const Templates = {
         Avg
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set value based on your estimated catch rate.
+        Set soft value as if you made the average amount of noise. Based on your estimated catch rate.
         <br>
         <br>
-        <b>Warning:</b> No guarantee to get chased out.
+        <b>Warning:</b> No guarantee that you will get to next room.
         <div class="mousehuntTooltip-arrow"></div>
       </div>
     </div>
     <div class="harpMeIn__buttonContainer mousehuntTooltipParent">
-      <button class="bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton min" style="color: white;">
-        Min
+      <button class="bountifulBeanstalkPlayHarpDialogView__maxHarpStringsButton max" style="color: white;">
+        Max
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set loud value to minimum amount of strings.
-        <br>
-        Most useful when noise per catch is equal to noise per miss.
+        Set soft value as if you made the most amount of noise. (ie 100% CR).
         <br>
         <br>
-        <b>Warning:</b> If noise per hunt is not constant, then you won't get chased out unless you have 100% CR.
+        <b>Warning:</b> Uses the most amount of strings but you won't get chased out if you make less than the max amount of noise with the amount hunts left.
         <div class="mousehuntTooltip-arrow"></div>
       </div>
     </div>
@@ -59,7 +59,7 @@ export const Templates = {
         Max
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set value as if you missed/fta every hunt.
+        Sets loud value as if you made the minimal amount of noise.
         <br>
         <br>
         <b>Warning:</b> Uses the most amount of string to guarantee chase.
@@ -71,7 +71,7 @@ export const Templates = {
         Avg
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set value based on your estimated catch rate.
+        Set loud value as if you made the average amount of noise. Based on your estimated catch rate.
         <br>
         <br>
         <b>Warning:</b> No guarantee to get chased out.
@@ -83,9 +83,9 @@ export const Templates = {
         Min
       </button>
       <div class="mousehuntTooltip tight top noEvents">
-        Set loud value to minimum amount of strings.
+        Set loud value as if you made the most amount of noise.
         <br>
-        Most useful when noise per catch is equal to noise per miss.
+        Best when min and max noise per hunt is equal.
         <br>
         <br>
         <b>Warning:</b> If noise per hunt is not constant, then you won't get chased out unless you have 100% CR.

@@ -75,7 +75,7 @@ const HarpMeOut = () => {
     playLoudly(maxNoise);
   }
 
-  function handleMinusMaxButton() {
+  function handleMinusMinButton() {
     const minNoise = getProjectedMinNoise(user);
     playSoftly(minNoise);
   }
@@ -85,7 +85,7 @@ const HarpMeOut = () => {
     playSoftly(avgNoise);
   }
 
-  function handleMinusMinButton() {
+  function handleMinusMaxButton() {
     const maxNoise = getProjectedMaxNoise(user);
     playSoftly(maxNoise);
   }
@@ -100,9 +100,12 @@ const HarpMeOut = () => {
     setLoudVolume(stringsToPlay);
   }
 
+  /**
+   * @param {number} toNoise
+   */
   function playSoftly(toNoise) {
     const data = getData().castle;
-    const stringsToPlay = toNoise - data.noise_level;
+    const stringsToPlay = toNoise - data.max_noise_level + 1;
     setSoftVolume(stringsToPlay);
   }
 
