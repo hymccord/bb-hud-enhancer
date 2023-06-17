@@ -1,5 +1,6 @@
 import { getHUD } from '../domNodes';
 import { getEnhancerSetting } from '../settings';
+import { Templates } from '../templates';
 import { log } from '../util/logging';
 
 // TODO: replace settings
@@ -80,6 +81,11 @@ export class Craftalyzer {
    */
   render(data, settings) {
     this.setCurrentRecipies(settings);
+
+    $('.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer').each((i, e) => {
+      $(e).append(Templates.CraftalyzerContainer);
+    });
+
     this.updateItems(data, settings);
   }
 
@@ -106,7 +112,6 @@ export class Craftalyzer {
         this._currentRecipies[craftableRecipeName] = {...recipe, result: craftable.result.type};
         this._currentRecipeOutputsToRecipeName.set(craftable.result.type, craftableRecipeName);
       });
-
   }
 
   /**
@@ -193,8 +198,8 @@ export class Craftalyzer {
   renderAllCraftable(data) {
     const container = getHUD();
     for (const craftable of data) {
-      $(`.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer[data-item-type="${craftable.selector}"]`, container)
-        .append(`<div class="headsUpDisplayBountifulBeanstalkView__craftalyzerQuantity">(${craftable.quantity})</div>`);
+      $(`.headsUpDisplayBountifulBeanstalkView__baitCraftableContainer[data-item-type="${craftable.selector}"] .headsUpDisplayBountifulBeanstalkView__craftalyzerQuantity`, container)
+        .text(craftable.quantity);
     }
   }
 }

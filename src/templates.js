@@ -1,5 +1,6 @@
 /* eslint-disable quotes */
 export const Templates = {
+  'CraftalyzerContainer': `<div class="headsUpDisplayBountifulBeanstalkView__craftalyzerQuantity"></div>`,
   'HistoryButton': `<a href="#" class="bb-hud-enh-remembrall-button"></a>`,
   'NoiseMeterArrow': `<div class="bountifulBeanstalkCastleView__noiseMeterArrow">▲</div>`,
   'HarpMeOut': `
