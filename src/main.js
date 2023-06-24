@@ -50,11 +50,12 @@ function showRemembrall() {
   });
 }
 
-function initialize() {
+/** @param {User} user */
+function initialize(user) {
   _container = $('.headsUpDisplayBountifulBeanstalkView');
 
   addSettings();
-  addStyles(styles, 'bb-hud-enh');
+  addStyles(styles, 'bb-hud-enh', true);
   addCraftalyzer(user);
   addNoiseHelper(user);
   // addRemembrall();
@@ -65,12 +66,17 @@ function initialize() {
 
 function main() {
   if (isAtBountifulBeanstalk(user)) {
-    initialize();
+    initialize(user);
   }
 
   eventRegistry.addEventListener('ajax_response', (data) => {
     try {
+      if (!data.user) {
+        return;
+      }
+
       if (!isAtBountifulBeanstalk(data.user)) {
+        initialized = false;
         return;
       }
 
@@ -79,7 +85,7 @@ function main() {
         return;
       }
 
-      initialize();
+      initialize(data.user);
     } catch (e) {
       log(e);
     }
