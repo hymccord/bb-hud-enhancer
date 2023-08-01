@@ -4,6 +4,10 @@ import { getOverallCatchRate } from './cre';
 /** @param {User} data */
 export function getProjectedMinNoise(data) {
   const castle = data.enviroment_atts.castle;
+  if (castle.is_auto_harp_enabled) {
+    return castle.noise_level;
+  }
+
   const minNoise = castle.noise_level + castle.projected_noise.actual_min * castle.hunts_remaining;
 
   return minNoise;
@@ -11,12 +15,16 @@ export function getProjectedMinNoise(data) {
 
 /** @param {User} data */
 export function getProjectedAvgNoise(data) {
+  const castle = data.enviroment_atts.castle;
+  if (castle.is_auto_harp_enabled) {
+    return castle.noise_level;
+  }
+
   const cre = getCastleCatchRate(data);
   const noisePerHunt =
     data.enviroment_atts.castle.projected_noise.actual_min * (1 - cre) +
     data.enviroment_atts.castle.projected_noise.actual_max * cre;
 
-  const castle = data.enviroment_atts.castle;
   const avgNoise = Math.round(castle.noise_level + noisePerHunt * castle.hunts_remaining);
 
   return avgNoise;
@@ -24,6 +32,10 @@ export function getProjectedAvgNoise(data) {
 /** @param {User} data */
 export function getProjectedMaxNoise(data) {
   const castle = data.enviroment_atts.castle;
+  if (castle.is_auto_harp_enabled) {
+    return castle.noise_level;
+  }
+
   const maxNoise = castle.noise_level + castle.projected_noise.actual_max * castle.hunts_remaining;
 
   return maxNoise;

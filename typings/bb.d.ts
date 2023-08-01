@@ -15,6 +15,7 @@ type EnvironmentAttributes = {
       actual_max: number;
     }
     hunts_remaining: number;
+    is_auto_harp_enabled: boolean;
   },
   items: {[key: string]: {
     quantity_unformatted: number;
