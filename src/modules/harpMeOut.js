@@ -32,7 +32,9 @@ const HarpMeOut = () => {
   let _container = null;
 
   self.render = () => {
-    _container = $(Templates.HarpMeOut).insertBefore('.bountifulBeanstalkPlayHarpDialogView__buttonRow');
+    const regularPlayTab = $('.bountifulBeanstalkPlayHarpDialogView__regularPlayTab');
+    const buttonRow = $('.bountifulBeanstalkPlayHarpDialogView__buttonRow', regularPlayTab);
+    _container = $(Templates.HarpMeOut).insertBefore(buttonRow);
     applyEventListeners();
   };
 
