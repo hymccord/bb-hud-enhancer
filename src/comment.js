@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name         Bountiful Beanstalk HUD Enhancer
 // @namespace    https://github.com/hymccord
-// @version      0.7
+// @source       https://github.com/hymccord/bb-hud-enhancer
+// @version      0.8
 // @description  Enhance the Bountiful Beanstalk HUD with useful information!
 // @author       Xellis
 // @match        https://www.mousehuntgame.com/*
@@ -13,3 +14,6 @@
 // ==/UserScript==
 // @ts-ignore
 ((w) =>{ if (w) { w.name = 'bb-hud-enh';}})();
+
+// This userscript is built via rollup so the it might look unkempt.
+// View the source repo for the organized source code.
