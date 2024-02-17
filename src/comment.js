@@ -2,7 +2,7 @@
 // @name         Bountiful Beanstalk HUD Enhancer
 // @namespace    https://github.com/hymccord
 // @source       https://github.com/hymccord/bb-hud-enhancer
-// @version      0.8
+// @version      0.9
 // @description  Enhance the Bountiful Beanstalk HUD with useful information!
 // @author       Xellis
 // @match        https://www.mousehuntgame.com/*
